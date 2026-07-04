@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLEAN WORLD - Central Interativa</title>
+  <!-- Tailwind CSS CDN para estilização rápida, responsiva e moderna -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Estilos CSS auxiliares para simular uma aplicação nativa de telemóvel -->
+  <style>
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    /* Transições de abas */
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 200ms;
+    }
+    /* Altura ajustável ao teclado e área segura */
+    body {
+      background-color: #0f172a;
+    }
+  </style>
+</head>
+<body class="text-slate-100 font-sans antialiased selection:bg-amber-500 selection:text-slate-900">
+
+  <!-- Container Principal: Se comporta como um telemóvel centrado em telas grandes e ecrã inteiro no mobile -->
+  <div class="max-w-md mx-auto min-h-screen bg-slate-950 flex flex-col justify-between border-x border-slate-800/80 shadow-2xl relative pb-24">
+    
+    <!-- Brilho Solar Decorativo em Background do Aplicativo -->
+    <div class="absolute top-0 right-10 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-20 left-10 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Header Nativo Mobile -->
+    <header class="relative overflow-hidden bg-slate-950 border-b border-slate-800/60 py-4 px-5 shrink-0 z-10">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-gradient-to-tr from-amber-500 to-amber-400 rounded-xl text-slate-950 shadow-md shadow-amber-500/10">
+          <!-- Ícone Solar SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+        </div>
+        <div>
+          <span class="text-[9px] font-bold uppercase tracking-widest text-amber-400 block leading-none">C&M Solar</span>
+          <h1 class="text-lg font-black tracking-tight text-white leading-tight">
+            CLEAN WORLD
+          </h1>
+        </div>
+      </div>
+    </header>
+
+    <!-- Corpo de Conteúdo com scroll independente -->
+    <main class="flex-1 px-4 py-5 space-y-6 overflow-y-auto">
+
+      <!-- TAB 1: CENTRAL DE DIAGNÓSTICO (Versão Compacta Mobile) -->
+      <section id="tab-dashboard" class="space-y-5">
+        
+        <!-- Formulário do Diagnóstico -->
+        <div class="bg-slate-900/60 border border-slate-800/60 p-4 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2">
+            <span class="text-base">🎛️</span>
+            <h2 class="text-xs font-bold text-white uppercase tracking-wider">Estado da sua Usina</h2>
+          </div>
+
+          <!-- Clima -->
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Condição Climática</label>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button onclick="setField('clima', 'sol')" id="opt-clima-sol" class="py-2 px-1 rounded-lg border text-center transition-all bg-amber-500/10 border-amber-500 text-amber-300">
+                <span class="text-xs font-bold block">☀️ Sol</span>
+              </button>
+              <button onclick="setField('clima', 'nublado')" id="opt-clima-nublado" class="py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400">
+                <span class="text-xs font-bold block">☁️ Nublado</span>
+              </button>
+              <button onclick="setField('clima', 'chuva_intensa')" id="opt-clima-chuva_intensa" class="py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400">
+                <span class="text-xs font-bold block">🌧️ Chuva</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sujeira -->
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Sujeira Visível</label>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button onclick="setField('sujeira', 'nenhuma')" id="opt-sujeira-nenhuma" class="py-2 px-1 rounded-lg border text-center transition-all bg-amber-500/10 border-amber-500 text-amber-300">
+                <span class="text-xs font-bold block">✨ Limpo</span>
+              </button>
+              <button onclick="setField('sujeira', 'leve')" id="opt-sujeira-leve" class="py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400">
+                <span class="text-xs font-bold block">🍃 Leve</span>
+              </button>
+              <button onclick="setField('sujeira', 'severa')" id="opt-sujeira-severa" class="py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400">
+                <span class="text-xs font-bold block">🐦 Severo</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sombreamento -->
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Tem sombra nas placas?</label>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button onclick="setField('sombreamento', 'nao')" id="opt-sombreamento-nao" class="py-2 px-1 rounded-lg border text-center transition-all bg-amber-500/10 border-amber-500 text-amber-300">
+                <span class="text-xs font-bold block">✅ Livre</span>
+              </button>
+              <button onclick="setField('sombreamento', 'sim')" id="opt-sombreamento-sim" class="py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400">
+                <span class="text-xs font-bold block">🌳 Bloqueado</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Inversor -->
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">LED do Inversor</label>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button onclick="setField('inversor', 'verde')" id="opt-inversor-verde" class="py-2 px-1 rounded-lg border text-center transition-all bg-amber-500/10 border-amber-500 text-amber-300">
+                <span class="text-xs font-bold block">🟢 Verde</span>
+              </button>
+              <button onclick="setField('inversor', 'piscando')" id="opt-inversor-piscando" class="py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400">
+                <span class="text-xs font-bold block">🟡 Pisca</span>
+              </button>
+              <button onclick="setField('inversor', 'vermelho')" id="opt-inversor-vermelho" class="py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400">
+                <span class="text-xs font-bold block">🔴 Vermelho</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Inputs Avançados -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Último Serviço</label>
+              <select id="select-ultimoServico" onchange="updateSelect('ultimoServico', this.value)" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500 min-h-[40px]">
+                <option value="recente">Menos de 6 meses</option>
+                <option value="mais6meses">Mais de 6 meses</option>
+              </select>
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Região da Usina</label>
+              <select id="select-regiao" onchange="updateSelect('regiao', this.value)" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500 min-h-[40px]">
+                <option value="urbana">Urbana (Pó)</option>
+                <option value="rural_praia">Rural/Maresia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultados e Relatório -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 space-y-4">
+          <div class="flex items-center gap-4">
+            <!-- Gráfico circular compacto -->
+            <div class="relative flex items-center justify-center shrink-0">
+              <svg class="w-20 h-20 transform -rotate-90">
+                <circle cx="40" cy="40" r="34" stroke-width="6" stroke="#1e293b" fill="transparent" />
+                <circle id="gauge-circle" cx="40" cy="40" r="34" stroke-width="6" stroke="url(#solarDiagGradient)" fill="transparent" stroke-dasharray="213.62" stroke-dashoffset="0" stroke-linecap="round" />
+                <defs>
+                  <linearGradient id="solarDiagGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f59e0b" />
+                    <stop offset="100%" stop-color="#10b981" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="absolute flex flex-col items-center">
+                <span id="gauge-value" class="text-base font-black text-white">100%</span>
+                <span class="text-[7px] text-slate-400 font-bold uppercase">Eficiência</span>
+              </div>
+            </div>
+
+            <!-- Identificadores -->
+            <div class="space-y-1">
+              <div id="status-badge" class="inline-block border px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider text-emerald-400 border-emerald-500/30 bg-emerald-500/10">
+                Saudável
+              </div>
+              <h3 class="text-xs font-bold text-white">Geração Estimada</h3>
+              <p class="text-[10px] text-slate-400">Estado preventivo gerado com base no e-book CLEAN WORLD.</p>
+            </div>
+          </div>
+
+          <!-- Diagnósticos -->
+          <div class="space-y-3 pt-3 border-t border-slate-800/80">
+            <div>
+              <h4 class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-1.5">Sintomas</h4>
+              <div id="alerts-container" class="space-y-1"></div>
+            </div>
+            <div>
+              <h4 class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-1.5">Ações Recomendadas</h4>
+              <div id="recommendations-container" class="space-y-1"></div>
+            </div>
+          </div>
+
+          <!-- Alerta de Suporte Crítico (WhatsApp) -->
+          <div id="support-banner" class="hidden p-3 rounded-xl bg-rose-950/30 border border-rose-900/40 space-y-2.5">
+            <div class="flex items-start gap-2">
+              <span class="text-rose-400">⚠️</span>
+              <p class="text-[10px] text-rose-300 leading-normal">
+                <strong>Necessita equipe técnica:</strong> Foram identificados problemas elétricos ou de acesso. Não arrisque sua segurança elétrica.
+              </p>
+            </div>
+            <a href="https://wa.me/5579999889412?text=Olá!%20Realizei%20o%20diagnóstico%20no%20Clean%20World%20e%20preciso%20de%20suporte%20na%20minha%20usina." target="_blank" rel="noopener noreferrer" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 min-h-[40px]">
+              Falar com Equipe C&M Solar
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: MANUAL / E-BOOK (Visualização de Artigos Mobile) -->
+      <section id="tab-chapters" class="hidden space-y-4">
+        
+        <!-- Seletor de capítulos horizontal amigável ao polegar -->
+        <div class="bg-slate-900/60 p-2 border border-slate-800 rounded-xl">
+          <span class="text-[8px] font-black tracking-widest text-slate-500 uppercase px-1.5 mb-1.5 block">Capítulos do Guia</span>
+          <div id="chapters-nav" class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none snap-x">
+            <!-- Inserido dinamicamente -->
+          </div>
+        </div>
+
+        <!-- Cartão de Leitura do Capítulo Ativo -->
+        <div id="chapter-content-container" class="space-y-4">
+          <!-- Inserido dinamicamente -->
+        </div>
+
+      </section>
+
+      <!-- TAB 3: CHECKLISTS INTERATIVOS -->
+      <section id="tab-checklists" class="hidden space-y-4">
+        
+        <!-- Score do Checklist -->
+        <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl flex items-center justify-between gap-3">
+          <div>
+            <span class="text-[8px] font-bold uppercase tracking-wider text-amber-400 block">Zelo Semanal</span>
+            <h3 class="text-xs font-bold text-white">Tarefas Concluídas</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-16 bg-slate-950 rounded-full h-1.5 border border-slate-800 overflow-hidden">
+              <div id="checklist-progress-bar" class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full transition-all" style="width: 0%"></div>
+            </div>
+            <span id="checklist-progress-text" class="text-xs font-bold text-white">0%</span>
+          </div>
+        </div>
+
+        <!-- Grupo 1: Monitoramento -->
+        <div class="bg-slate-900/60 border border-slate-800 p-3.5 rounded-xl space-y-2">
+          <h4 class="text-[10px] font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+            <span>📊</span> Monitoramento Semanal (Cap. 2)
+          </h4>
+          <div class="space-y-1.5">
+            <button onclick="toggleCheckItem('appCheck')" class="w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left bg-slate-950/40 hover:bg-slate-950 border border-slate-800/80 min-h-[40px] text-xs">
+              <div id="chk-appCheck" class="w-4 h-4 rounded border border-slate-700 shrink-0 text-transparent flex items-center justify-center">✓</div>
+              <span class="text-slate-300 leading-tight">Verifiquei o gráfico de geração semanal no aplicativo?</span>
+            </button>
+            <button onclick="toggleCheckItem('historicoCheck')" class="w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left bg-slate-950/40 hover:bg-slate-950 border border-slate-800/80 min-h-[40px] text-xs">
+              <div id="chk-historicoCheck" class="w-4 h-4 rounded border border-slate-700 shrink-0 text-transparent flex items-center justify-center">✓</div>
+              <span class="text-slate-300 leading-tight">Comparei a fatura de energia atual com o mês anterior?</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grupo 2: Segurança -->
+        <div class="bg-slate-900/60 border border-slate-800 p-3.5 rounded-xl space-y-2">
+          <h4 class="text-[10px] font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+            <span>🛡️</span> Regras de Segurança (Cap. 5)
+          </h4>
+          <div class="space-y-1.5">
+            <button onclick="toggleCheckItem('evitarInversor')" class="w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left bg-slate-950/40 hover:bg-slate-950 border border-slate-800/80 min-h-[40px] text-xs">
+              <div id="chk-evitarInversor" class="w-4 h-4 rounded border border-slate-700 shrink-0 text-transparent flex items-center justify-center">✓</div>
+              <span class="text-slate-300 leading-tight">Não toco e nem abro a fiação traseira ou o inversor?</span>
+            </button>
+            <button onclick="toggleCheckItem('evitarTelhado')" class="w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left bg-slate-950/40 hover:bg-slate-950 border border-slate-800/80 min-h-[40px] text-xs">
+              <div id="chk-evitarTelhado" class="w-4 h-4 rounded border border-slate-700 shrink-0 text-transparent flex items-center justify-center">✓</div>
+              <span class="text-slate-300 leading-tight">Estou seguro e evito subir no telhado sem equipamento EPI?</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grupo 3: Suporte Técnico -->
+        <div class="bg-slate-900/60 border border-slate-800 p-3.5 rounded-xl space-y-2">
+          <h4 class="text-[10px] font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+            <span>🔧</span> Triagem de Casos Críticos (Cap. 7)
+          </h4>
+          <div class="space-y-1.5">
+            <button onclick="toggleCheckItem('manchasResistentes')" class="w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left bg-slate-950/40 hover:bg-slate-950 border border-slate-800/80 min-h-[40px] text-xs">
+              <div id="chk-manchasResistentes" class="w-4 h-4 rounded border border-slate-700 shrink-0 text-transparent flex items-center justify-center">✓</div>
+              <span class="text-slate-300 leading-tight">Existem sujeiras resistentes que não saem apenas com água?</span>
+            </button>
+            <button onclick="toggleCheckItem('telhadoInclinado')" class="w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left bg-slate-950/40 hover:bg-slate-950 border border-slate-800/80 min-h-[40px] text-xs">
+              <div id="chk-telhadoInclinado" class="w-4 h-4 rounded border border-slate-700 shrink-0 text-transparent flex items-center justify-center">✓</div>
+              <span class="text-slate-300 leading-tight">O telhado é muito alto e de acesso físico perigoso?</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Alerta de suporte automático se houver casos complexos ativos -->
+        <div id="triagem-alert-banner" class="hidden p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl space-y-2">
+          <p class="text-[10px] text-amber-300 leading-relaxed">
+            <strong>Caso técnico identificado:</strong> Foi detetado um obstáculo de acesso ou sujeira complexa. Recomendamos agendar uma limpeza especializada.
+          </p>
+          <a href="https://wa.me/5579999889412?text=Olá,%20tenho%20um%20caso%20especial%20de%20sujeira/acesso%20na%20minha%20usina%20e%20gostaria%20de%20um%20suporte." target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs py-2 px-3 rounded-lg min-h-[40px] flex items-center justify-center">
+            Agendar Revisão Técnica C&M Solar
+          </a>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Rodapé Compacto Mobile -->
+    <footer class="bg-slate-950 border-t border-slate-900 p-5 shrink-0 space-y-4">
+      <div class="text-center space-y-1">
+        <h3 class="text-xs font-black text-white">C&M Solar Engenharia</h3>
+        <p class="text-[9px] text-slate-500 leading-relaxed">Atendimento e confiabilidade técnica em Sergipe.</p>
+      </div>
+
+      <!-- Links oficiais atualizados -->
+      <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl space-y-2 text-[10px]">
+        <div class="flex items-center justify-between text-slate-400">
+          <span>📱 WhatsApp:</span>
+          <strong class="text-white">(79) 9.9988-9412</strong>
+        </div>
+        <div class="flex items-center justify-between text-slate-400">
+          <span>✉️ Site:</span>
+          <a href="https://www.cemsolarengenharia.com" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">www.cemsolarengenharia.com</a>
+        </div>
+        
+        <!-- Redes Sociais com o nome @raquelenergiasolar -->
+        <div class="flex items-center justify-around pt-2 border-t border-slate-800 text-slate-300">
+          <a href="https://www.instagram.com/raquelenergiasolar/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 hover:text-amber-400">
+            <!-- Ícone Instagram -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-amber-400">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+            <span>@raquelenergiasolar</span>
+          </a>
+          <span>|</span>
+          <a href="https://studio.youtube.com/channel/UCubQMg1cHqE7MtoN30rGpnw" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 hover:text-red-400">
+            <!-- Ícone YouTube -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-red-500">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2a29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33a2.78 2.78 0 0 0 2.84 2.17c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2a29 29 0 0 0 .46-5.25a29 29 0 0 0-.46-5.33z" />
+              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="currentColor" />
+            </svg>
+            <span>@raquelenergiasolar</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="text-[8px] text-slate-600 text-center">
+        CLEAN WORLD • Guia Interativo de Autonomia Solar © 2026. Todos os direitos reservados.
+      </div>
+    </footer>
+
+    <!-- Barra de Navegação de Abas Inferiores (Fixa na base do Shell) -->
+    <div class="absolute bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-md border-t border-slate-900 px-4 py-2.5 flex justify-around items-center z-25">
+      <button onclick="switchTab('dashboard')" id="btn-mob-dashboard" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all text-amber-400 font-bold min-h-[44px] justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+        </svg>
+        <span class="text-[8px]">Diagnóstico</span>
+      </button>
+
+      <button onclick="switchTab('chapters')" id="btn-mob-chapters" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all text-slate-500 min-h-[44px] justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg>
+        <span class="text-[8px]">Manual</span>
+      </button>
+
+      <button onclick="switchTab('checklists')" id="btn-mob-checklists" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all text-slate-500 min-h-[44px] justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+        </svg>
+        <span class="text-[8px]">Checklists</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    // Estado Centralizado
+    const state = {
+      activeTab: 'dashboard',
+      activeChapter: 1,
+      clima: 'sol',
+      sujeira: 'nenhuma',
+      sombreamento: 'nao',
+      inversor: 'verde',
+      ultimoServico: 'recente',
+      regiao: 'urbana',
+      checklists: {
+        appCheck: false,
+        historicoCheck: false,
+        evitarInversor: false,
+        evitarTelhado: false,
+        manchasResistentes: false,
+        telhadoInclinado: false
+      }
+    };
+
+    // Dados dos capítulos
+    const chapters = [
+      {
+        id: 1,
+        title: "Limpeza Simples",
+        icon: "🧹",
+        summary: "A sujeira acumulada (poeira, folhas, fezes) reduz a geração em até 20%. Saiba como resolver de forma segura e econômica.",
+        highlights: [
+          { type: "success", text: "Use apenas água limpa e um pano macio." },
+          { type: "danger", text: "NUNCA use produtos químicos ou lavadoras de alta pressão." }
+        ],
+        extra: "Limpar a cada 12 meses (urbana) ou a cada 6 meses (zonas rurais/litoral)."
+      },
+      {
+        id: 2,
+        title: "Acompanhe a Produção",
+        icon: "📊",
+        summary: "Monitorar semanalmente evita surpresas e garante os até 95% de economia programada para a sua fatura em Sergipe.",
+        highlights: [
+          { type: "success", text: "Acompanhe pelo visor físico ou aplicativo do fabricante." },
+          { type: "warning", text: "Perdas maiores de 50% em dias ensolarados são um sinal de aviso." }
+        ],
+        extra: "Verifique o LED do inversor pelo menos uma vez por semana."
+      },
+      {
+        id: 3,
+        title: "Zelo Ambiental",
+        icon: "🌳",
+        summary: "Sombreamentos parciais causados pelo crescimento de árvores, antenas ou construções podem reduzir drasticamente o rendimento.",
+        highlights: [
+          { type: "success", text: "Programe podas periódicas de galhos de acordo com as leis locais." },
+          { type: "warning", text: "O bloqueio de um único módulo afeta todo o grupo ligado a ele." }
+        ],
+        extra: "Consulte a C&M Solar para estudos de sombreamento técnico."
+      },
+      {
+        id: 4,
+        title: "Dias Nublados",
+        icon: "☁️",
+        summary: "A radiação difusa continua gerando energia mesmo com céu encoberto. Quedas temporárias de 10% a 25% já foram calculadas no seu retorno financeiro.",
+        highlights: [
+          { type: "success", text: "Os painéis funcionam aproveitando a luz que passa pelas nuvens." },
+          { type: "success", text: "As chuvas intensas auxiliam na pré-lavagem das placas de vidro." }
+        ],
+        extra: "Não se preocupe com variações diárias; foque no acumulado mensal."
+      },
+      {
+        id: 5,
+        title: "Segurança de Operação",
+        icon: "⚠️",
+        summary: "Proteja sua integridade física. Lidar com sistemas fotovoltaicos envolve perigos de alta tensão e corrente contínua.",
+        highlights: [
+          { type: "danger", text: "NUNCA abra tampas protetoras ou manuseie cabos soltos." },
+          { type: "danger", text: "Evite subir no telhado sem o uso certificado de EPI e cabo de vida." }
+        ],
+        extra: "Em caso de falha física visível, contate imediatamente o suporte especializado."
+      },
+      {
+        id: 6,
+        title: "Sua Conta de Luz",
+        icon: "💵",
+        summary: "Compreender os conceitos de autoconsumo e créditos injetados ajudam a comprovar o retorno real sobre o seu investimento.",
+        highlights: [
+          { type: "success", text: "Consumo: Energia consumida diretamente da rede quando o sol se põe." },
+          { type: "success", text: "Injetada: Excedente que vai para a concessionária e vira créditos." }
+        ],
+        extra: "Lembre-se de descontar o custo mínimo de disponibilidade elétrica."
+      },
+      {
+        id: 7,
+        title: "Limpeza Profissional",
+        icon: "🔧",
+        summary: "Sujeira consolidada, fezes secas, poeiras severas ou telhados de difícil acesso requerem o auxílio de técnicos qualificados.",
+        highlights: [
+          { type: "success", text: "Garante que não haverá microfissuras causadas por pisoteio." },
+          { type: "success", text: "Uso correto de produtos certificados pelos fabricantes." }
+        ],
+        extra: "Recomenda-se realizar uma triagem semestral na usina solar."
+      },
+      {
+        id: 8,
+        title: "Sem Dúvidas",
+        icon: "🤝",
+        summary: "A C&M Solar Engenharia oferece mais de 5 anos de experiência e acompanhamento de longo prazo para garantir que sua economia dure por 25 anos.",
+        highlights: [
+          { type: "success", text: "Atendimento ético e transparente liderado por José Luiz e Raquel Camarão." },
+          { type: "success", text: "Suporte especializado pronto para resolver dúvidas e agendar limpezas técnicas." }
+        ],
+        extra: "Tire as suas dúvidas diretamente via canais de suporte digital."
+      }
+    ];
+
+    // Alternar Abas (Comportamento Mobile)
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+
+      // Visibilidade das Seções
+      document.getElementById('tab-dashboard').classList.toggle('hidden', tabId !== 'dashboard');
+      document.getElementById('tab-chapters').classList.toggle('hidden', tabId !== 'chapters');
+      document.getElementById('tab-checklists').classList.toggle('hidden', tabId !== 'checklists');
+
+      // Estilo ativo nos botões inferiores
+      ['dashboard', 'chapters', 'checklists'].forEach(id => {
+        const btn = document.getElementById(`btn-mob-${id}`);
+        if (id === tabId) {
+          btn.className = "flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all text-amber-400 font-bold min-h-[44px] justify-center";
+        } else {
+          btn.className = "flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all text-slate-500 min-h-[44px] justify-center";
+        }
+      });
+
+      if (tabId === 'chapters') {
+        renderChapters();
+      }
+    }
+
+    // Configura botões de controle de Diagnóstico
+    function setField(field, value) {
+      state[field] = value;
+
+      ['sol', 'nublado', 'chuva_intensa', 'nenhuma', 'leve', 'severa', 'nao', 'sim', 'verde', 'piscando', 'vermelho'].forEach(opt => {
+        const btn = document.getElementById(`opt-${field}-${opt}`);
+        if (btn) {
+          if (opt === value) {
+            btn.className = "py-2 px-1 rounded-lg border text-center transition-all bg-amber-500/10 border-amber-500 text-amber-300";
+          } else {
+            btn.className = "py-2 px-1 rounded-lg border text-center transition-all border-slate-800 bg-slate-900/40 text-slate-400";
+          }
+        }
+      });
+
+      calculateDiagnostic();
+    }
+
+    function updateSelect(field, val) {
+      state[field] = val;
+      calculateDiagnostic();
+    }
+
+    // Algoritmo de Diagnóstico de Desempenho
+    function calculateDiagnostic() {
+      let score = 100;
+      let alerts = [];
+      let recommendations = [];
+      let needProfessional = false;
+
+      if (state.clima === 'nublado') {
+        alerts.push("Produção reduzida (10% a 25%) devido à nebulosidade.");
+        recommendations.push("Os painéis captam luz difusa em dias cinzas. É perfeitamente normal.");
+      } else if (state.clima === 'chuva_intensa') {
+        alerts.push("Geração reduzida de forma temporária pela chuva.");
+        recommendations.push("A chuva forte auxilia na limpeza prévia da poeira leve nas placas.");
+      }
+
+      if (state.sujeira === 'leve') {
+        score -= 10;
+        alerts.push("Resíduos de poeira leve acumulados.");
+        recommendations.push("Se possível, programe uma lavagem simples apenas com água limpa.");
+      } else if (state.sujeira === 'severa') {
+        score -= 25;
+        alerts.push("Sujeira severa (fezes secas, fuligem). Perda de eficiência.");
+        if (state.regiao === 'rural_praia' || state.ultimoServico === 'mais6meses') {
+          needProfessional = true;
+          recommendations.push("Recomendado suporte C&M Solar devido à dureza dos resíduos.");
+        } else {
+          recommendations.push("Realize uma lavagem criteriosa ou chame auxílio técnico.");
+        }
+      }
+
+      if (state.sombreamento === 'sim') {
+        score -= 30;
+        alerts.push("Sombras frequentes detectadas sobre os módulos.");
+        recommendations.push("Avalie poda de copas de árvores ou reposicionamento de obstáculos.");
+      }
+
+      if (state.inversor === 'vermelho' || state.inversor === 'piscando') {
+        score -= 50;
+        alerts.push("Erro elétrico indicado no visor do Inversor.");
+        needProfessional = true;
+        recommendations.push("Não toque nos aparelhos. Chame o suporte técnico imediatamente.");
+      }
+
+      if (state.ultimoServico === 'mais6meses') {
+        if (state.regiao === 'rural_praia') {
+          alerts.push("Excedido período seguro para maresia/zona rural (6 meses).");
+          needProfessional = true;
+          recommendations.push("Manutenções preventivas semestrais em Sergipe evitam corrosão.");
+        } else {
+          alerts.push("Usina urbana necessitando de revisão anual.");
+          recommendations.push("Considere agendar limpeza ou fazer autovistoria visual.");
+        }
+      }
+
+      let status = "Saudável";
+      let textClass = "text-emerald-400 border-emerald-500/30 bg-emerald-500/10";
+
+      if (score < 55 || needProfessional) {
+        status = "Visita Técnica Indicada";
+        textClass = "text-rose-400 border-rose-500/30 bg-rose-500/10";
+      } else if (score < 85) {
+        status = "Atenção Necessária";
+        textClass = "text-amber-400 border-amber-500/30 bg-amber-500/10";
+      }
+
+      document.getElementById('status-badge').innerText = status;
+      document.getElementById('status-badge').className = `inline-block border px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider ${textClass}`;
+      document.getElementById('gauge-value').innerText = `${score}%`;
+
+      const circle = document.getElementById('gauge-circle');
+      const circumference = 213.62;
+      const offset = circumference * (1 - score / 100);
+      circle.style.strokeDashoffset = offset;
+
+      const alertsContainer = document.getElementById('alerts-container');
+      if (alerts.length === 0) {
+        alertsContainer.innerHTML = `
+          <div class="text-[10px] text-emerald-400 bg-emerald-950/20 p-2 rounded-xl border border-emerald-900/30 flex items-center gap-1.5">
+            <span>✓</span> Usina operando de forma otimizada.
+          </div>`;
+      } else {
+        alertsContainer.innerHTML = alerts.map(al => `
+          <div class="text-[10px] text-amber-300 bg-amber-950/20 p-2 rounded-xl border border-amber-900/30 flex items-start gap-1.5">
+            <span class="mt-0.5">⚠️</span> <span>${al}</span>
+          </div>`).join('');
+      }
+
+      const recsContainer = document.getElementById('recommendations-container');
+      const standardRecs = recommendations.length > 0 ? recommendations : ["Nenhum procedimento imediato necessário. Continue acompanhando os indicadores semanais."];
+      recsContainer.innerHTML = standardRecs.map(rec => `
+        <div class="text-[10px] text-emerald-300 bg-emerald-950/15 p-2 rounded-xl border border-emerald-900/30 flex items-start gap-1.5">
+          <span class="mt-0.5">💡</span> <span>${rec}</span>
+        </div>`).join('');
+
+      document.getElementById('support-banner').classList.toggle('hidden', !needProfessional);
+    }
+
+    // Renderiza e gerencia os capítulos em visualização mobile
+    function renderChapters() {
+      const nav = document.getElementById('chapters-nav');
+      nav.innerHTML = chapters.map(ch => {
+        const isActive = ch.id === state.activeChapter;
+        return `
+          <button onclick="selectChapter(${ch.id})" class="flex-shrink-0 snap-center flex items-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all ${
+            isActive 
+              ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/10' 
+              : 'bg-slate-900 text-slate-400 hover:text-white'
+          }">
+            <span>${ch.icon}</span> <span class="whitespace-nowrap">${ch.title}</span>
+          </button>
+        `;
+      }).join('');
+
+      const contentContainer = document.getElementById('chapter-content-container');
+      const activeCh = chapters.find(c => c.id === state.activeChapter);
+
+      contentContainer.innerHTML = `
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 space-y-4 relative overflow-hidden">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">${activeCh.icon}</span>
+            <h2 class="text-sm font-extrabold text-white">${activeCh.title}</h2>
+          </div>
+
+          <p class="text-[11px] text-slate-300 leading-relaxed border-l-2 border-amber-500 pl-2.5 py-0.5">
+            ${activeCh.summary}
+          </p>
+
+          <div class="space-y-2">
+            ${activeCh.highlights.map(hl => {
+              let typeClass = 'bg-slate-950/60 border-slate-800 text-slate-300';
+              let typeIcon = 'ℹ️';
+
+              if (hl.type === 'success') {
+                typeClass = 'bg-emerald-950/10 border-emerald-900/30 text-emerald-300';
+                typeIcon = '✓';
+              } else if (hl.type === 'danger') {
+                typeClass = 'bg-rose-950/10 border-rose-900/30 text-rose-300';
+                typeIcon = '✗';
+              }
+
+              return `
+                <div class="p-2.5 rounded-lg border flex items-start gap-2 ${typeClass}">
+                  <span class="text-[10px] font-bold shrink-0 mt-0.5">${typeIcon}</span>
+                  <span class="text-[10px] leading-snug">${hl.text}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <div class="p-2.5 bg-slate-950/60 border border-slate-800 rounded-lg text-[9px] text-slate-400">
+            <strong>Frequência Recomendada:</strong> ${activeCh.extra}
+          </div>
+        </div>
+      `;
+    }
+
+    function selectChapter(id) {
+      state.activeChapter = id;
+      renderChapters();
+    }
+
+    // Gerenciador de Checklists Mobile
+    function toggleCheckItem(key) {
+      state.checklists[key] = !state.checklists[key];
+
+      const chk = document.getElementById(`chk-${key}`);
+      if (state.checklists[key]) {
+        chk.className = "w-4 h-4 rounded border shrink-0 flex items-center justify-center bg-amber-500 border-amber-500 text-slate-950 text-[10px] font-black";
+        chk.innerText = "✓";
+      } else {
+        chk.className = "w-4 h-4 rounded border border-slate-700 shrink-0 text-transparent flex items-center justify-center";
+        chk.innerText = "✓";
+      }
+
+      // Calcula progresso total
+      const checkedKeys = Object.keys(state.checklists);
+      const total = checkedKeys.length;
+      const checkedCount = checkedKeys.filter(k => state.checklists[k]).length;
+      const percent = Math.round((checkedCount / total) * 100);
+
+      document.getElementById('checklist-progress-bar').style.width = `${percent}%`;
+      document.getElementById('checklist-progress-text').innerText = `${percent}%`;
+
+      const hasSpecialCase = state.checklists.manchasResistentes || state.checklists.telhadoInclinado;
+      document.getElementById('triagem-alert-banner').classList.toggle('hidden', !hasSpecialCase);
+    }
+
+    // Inicialização
+    window.onload = function() {
+      calculateDiagnostic();
+    };
+  </script>
+
+</body>
+</html>
